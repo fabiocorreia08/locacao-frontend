@@ -1,0 +1,130 @@
+.listagem-padrao {
+  padding: 40px;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #fffef5;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header h2 {
+  color: #333;
+}
+
+.btn-novo {
+  background-color: #f4c542;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-novo:hover {
+  background-color: #d4a937;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+}
+
+thead {
+  background-color: #fff8dc;
+}
+
+th, td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+  color: #444;
+}
+
+tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.btn-acao {
+  margin-right: 8px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.detalhar {
+  background-color: #ffe599;
+}
+
+.editar {
+  background-color: #cfe2f3;
+}
+
+.excluir {
+  background-color: #f4cccc;
+}
+
+.btn-acao:hover {
+  opacity: 0.85;
+}
+
+/* Modal de confirmação */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal {
+  background-color: #fffef5;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #aaa;
+  text-align: center;
+  width: 300px;
+}
+
+.modal-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.modal button {
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.modal .cancelar {
+  background-color: #f4cccc;
+}
+
+.modal .salvar {
+  background-color: #f4c542;
+  color: #fff;
+}
+
+.erro-usuario-senha {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

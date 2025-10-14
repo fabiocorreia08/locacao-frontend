@@ -1,0 +1,47 @@
+.detalhar-container {
+  padding: 40px;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #fffef5;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.detalhes {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ccc;
+  margin-bottom: 30px;
+}
+
+.detalhes p {
+  margin: 15px 0;
+  font-size: 1rem;
+  color: #444;
+}
+
+.voltar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.voltar button {
+  background-color: #f4c542;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.voltar button:hover {
+  opacity: 0.9;
+}

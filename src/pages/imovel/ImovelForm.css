@@ -1,0 +1,76 @@
+.form-container {
+  padding: 40px;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #fffef5;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form-imovel {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ccc;
+  margin-bottom: 30px;
+}
+
+.form-imovel label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 500;
+}
+
+.form-imovel input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #fff;
+}
+
+.form-acoes {
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+.cancelar {
+  background-color: #f4cccc;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.salvar {
+  background-color: #f4c542;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.salvar:hover,
+.cancelar:hover {
+  opacity: 0.9;
+}

@@ -1,0 +1,128 @@
+.calendarioAnual {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1rem;
+  align-items: center;
+}
+
+.linhaHorizontal {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: nowrap;
+}
+
+.mes {
+  width: 250px;
+  min-height: 280px;
+  padding: 0.5rem;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.tituloMes {
+  text-align: center;
+  margin: 0.25rem 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.2;
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 0.7rem;
+}
+
+.cabecalho th {
+  background-color: #eee;
+  font-weight: bold;
+  padding: 2px;
+  border: 1px solid #ddd;
+  text-align: center;
+  width: 14.28%;
+}
+
+.celula {
+  width: 14.28%;
+  height: 24px;
+  text-align: center;
+  border: 1px solid #ddd;
+  padding: 0;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+
+.feriado {
+  background-color: #ffe0e0;
+  font-weight: bold;
+  color: #b00000;
+}
+
+.locado {
+  background-color: #007BFF !important;
+  color: white;
+  font-weight: bold;
+}
+
+.anoSelector select {
+  padding: 2px 6px;
+  font-size: 0.8rem;
+  width: 80px;         /* menor que os 100px anteriores */
+  border-radius: 4px;
+}
+
+.selectAno {
+  width: 80px;           /* largura menor */
+  font-size: 0.8rem;     /* fonte compacta */
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .linhaHorizontal {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .mes {
+    width: 45%;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .mes {
+    width: 100%;
+  }
+}
+
+.anoSelectorCard {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+  flex-wrap: nowrap;
+}
+
+.labelAno {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #333;
+  margin: 0; 
+}
+
+.selectAno {
+  width: 100%;
+  font-size: 0.8rem;
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+}
