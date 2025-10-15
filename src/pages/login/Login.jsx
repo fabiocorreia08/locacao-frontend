@@ -10,11 +10,19 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // ✅ Redireciona para /home se já estiver logado
+  // Verifica se há token válido e redireciona para /home
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      navigate("/home");
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        const isExpired = payload.exp * 1000 < Date.now();
+        if (!isExpired) {
+          navigate("/home");
+        }
+      } catch (err) {
+        console.warn("Token inválido ou malformado:", err);
+      }
     }
   }, [navigate]);
 
@@ -27,11 +35,19 @@ function Login() {
       const response = await login({ username, password });
       const { token } = response.data;
 
+      if (!token) {
+        throw new Error("Token não recebido");
+      }
+
       localStorage.setItem("token", token);
-      navigate("/home"); // ✅ vai pra rota protegida
+      navigate("/home");
     } catch (err) {
       console.error("Erro no login:", err);
-      setErro("Usuário ou senha inválidos");
+      const mensagem =
+        err.response?.data?.message ||
+        err.message ||
+        "Erro ao conectar com o servidor";
+      setErro(mensagem);
     } finally {
       setLoading(false);
     }
@@ -68,7 +84,11 @@ function Login() {
           <button
             type="button"
             className="cancelar"
-            onClick={() => navigate("/login")}
+            onClick={() => {
+              setUsername("");
+              setPassword("");
+              setErro("");
+            }}
             disabled={loading}
           >
             Cancelar
