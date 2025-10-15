@@ -33,10 +33,11 @@ function Login() {
 
     try {
       const response = await login({ username, password });
-      console.log("Resposta do backend:", response);
+      console.log("Resposta do backend:", response.data);
 
       const token = response?.data?.token;
-
+      console.log("Token recebido:", token);
+      
       if (!token || token.split(".").length !== 3) {
         throw new Error("Token inválido ou não recebido");
       }
