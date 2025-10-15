@@ -10,10 +10,9 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Verifica se há token válido e redireciona para /home
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
+    if (token && token.split(".").length === 3) {
       try {
         const payload = JSON.parse(atob(token.split(".")[1]));
         const isExpired = payload.exp * 1000 < Date.now();
@@ -35,19 +34,15 @@ function Login() {
       const response = await login({ username, password });
       const { token } = response.data;
 
-      if (!token) {
-        throw new Error("Token não recebido");
+      if (!token || token.split(".").length !== 3) {
+        throw new Error("Token inválido ou não recebido");
       }
 
       localStorage.setItem("token", token);
       navigate("/home");
     } catch (err) {
       console.error("Erro no login:", err);
-      const mensagem =
-        err.response?.data?.message ||
-        err.message ||
-        "Erro ao conectar com o servidor";
-      setErro(mensagem);
+      setErro("Usuário ou senha inválidos");
     } finally {
       setLoading(false);
     }
