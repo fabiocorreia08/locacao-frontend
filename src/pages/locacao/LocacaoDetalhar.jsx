@@ -80,9 +80,6 @@ const LocacaoDetalhar = () => {
           <label>Qtd Pessoas:</label>
           <input type="number" value={locacao.qtdPessoas} disabled />
 
-          <label>Valor Diária:</label>
-          <input type="text" value={formatarValor(locacao.valorDiaria)} disabled />
-
           <label>Valor Locação:</label>
           <input type="text" value={formatarValor(locacao.valorLocacao)} disabled />
 

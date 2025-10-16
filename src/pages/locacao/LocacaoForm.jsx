@@ -24,7 +24,6 @@ const LocacaoForm = () => {
       dataFim: '',
       qtdDias: '',
       qtdPessoas: '',
-      valorDiaria: '',
       valorLocacao: '',
       valorFaxina: '',
       valorTotal: '',
@@ -58,7 +57,6 @@ const LocacaoForm = () => {
     const { name, value } = e.target;
     const updatedLocacao = { ...formData.locacao, [name]: value };
 
-    // Cálculo de qtdDias
     if (name === 'dataInicio' || name === 'dataFim') {
       const inicio = DateTime.fromISO(updatedLocacao.dataInicio);
       const fim = DateTime.fromISO(updatedLocacao.dataFim);
@@ -70,19 +68,6 @@ const LocacaoForm = () => {
       }
     }
 
-    // Cálculo de valorLocacao
-    const qtdPessoas = parseInt(updatedLocacao.qtdPessoas);
-    const qtdDias = parseInt(updatedLocacao.qtdDias);
-    const valorDiaria = parseFloat(limparValorMonetario(updatedLocacao.valorDiaria));
-
-    if (!isNaN(qtdPessoas) && !isNaN(qtdDias) && !isNaN(valorDiaria)) {
-      const valorLocacao = qtdPessoas * valorDiaria * qtdDias;
-      updatedLocacao.valorLocacao = valorLocacao.toFixed(2).replace('.', ',');
-    } else {
-      updatedLocacao.valorLocacao = '';
-    }
-
-    // Cálculo de valorTotal
     const valorLocacaoNum = parseFloat(limparValorMonetario(updatedLocacao.valorLocacao));
     const valorFaxinaNum = parseFloat(limparValorMonetario(updatedLocacao.valorFaxina));
     if (!isNaN(valorLocacaoNum) && !isNaN(valorFaxinaNum)) {
@@ -92,7 +77,6 @@ const LocacaoForm = () => {
       updatedLocacao.valorTotal = '';
     }
 
-    // Cálculo de valorRestante
     const valorReservaNum = parseFloat(limparValorMonetario(updatedLocacao.valorReserva));
     const valorTotalNum = parseFloat(limparValorMonetario(updatedLocacao.valorTotal));
     if (!isNaN(valorTotalNum) && !isNaN(valorReservaNum)) {
@@ -157,7 +141,6 @@ const LocacaoForm = () => {
       dataInicio: converterInputParaISO(formData.locacao.dataInicio),
       dataFim: converterInputParaISO(formData.locacao.dataFim),
       dataReserva: converterInputParaISO(formData.locacao.dataReserva),
-      valorDiaria: parseFloat(limparValorMonetario(formData.locacao.valorDiaria)),
       valorLocacao: parseFloat(limparValorMonetario(formData.locacao.valorLocacao)),
       valorFaxina: parseFloat(limparValorMonetario(formData.locacao.valorFaxina)),
       valorTotal: parseFloat(limparValorMonetario(formData.locacao.valorTotal)),
@@ -223,94 +206,100 @@ const LocacaoForm = () => {
                 ...prev,
                 locatario: { ...prev.locatario, cpf: e.target.value }
               }))
-            }          
+            }
             onBlur={handleCpfLocatarioBlur}
             options={{ delimiters: ['.', '.', '-'], blocks: [3, 3, 3, 2], numericOnly: true }}
           />
 
-        <label>Nome Locatário:</label>
-        <input type="text" value={formData.locatario.nome} readOnly />
+          <label>Nome Locatário:</label>
+          <input type="text" value={formData.locatario.nome} readOnly />
 
-        <label>Data Início:</label>
-        <input type="date" name="dataInicio" value={formData.locacao.dataInicio} onChange={handleLocacaoChange} />
+          <label>Data Início:</label>
+          <input type="date" name="dataInicio" value={formData.locacao.dataInicio} onChange={handleLocacaoChange} />
 
-        <label>Data Fim:</label>
-        <input type="date" name="dataFim" value={formData.locacao.dataFim} onChange={handleLocacaoChange} />
+          <label>Data Fim:</label>
+          <input type="date" name="dataFim" value={formData.locacao.dataFim} onChange={handleLocacaoChange} />
 
-        <label>Qtd Dias:</label>
-        <input type="number" name="qtdDias" value={formData.locacao.qtdDias} readOnly />
+                    <label>Qtd Dias:</label>
+          <input
+            type="number"
+            name="qtdDias"
+            value={formData.locacao.qtdDias}
+            readOnly
+          />
 
-        <label>Qtd Pessoas:</label>
-        <input type="number" name="qtdPessoas" value={formData.locacao.qtdPessoas} onChange={handleLocacaoChange} />
+          <label>Qtd Pessoas:</label>
+          <input
+            type="number"
+            name="qtdPessoas"
+            value={formData.locacao.qtdPessoas}
+            onChange={handleLocacaoChange}
+          />
 
-        <label>Valor Diária:</label>
-        <Cleave
-          name="valorDiaria"
-          value={formData.locacao.valorDiaria}
-          onChange={handleLocacaoChange}
-          options={cleaveOptions}
-        />
+          <label>Valor Locação:</label>
+          <Cleave
+            name="valorLocacao"
+            value={formData.locacao.valorLocacao}
+            onChange={handleLocacaoChange}
+            options={cleaveOptions}
+          />
 
-        <label>Valor Locação:</label>
-        <Cleave
-          name="valorLocacao"
-          value={formData.locacao.valorLocacao}
-          options={cleaveOptions}
-          readOnly
-        />
+          <label>Valor Faxina:</label>
+          <Cleave
+            name="valorFaxina"
+            value={formData.locacao.valorFaxina}
+            onChange={handleLocacaoChange}
+            options={cleaveOptions}
+          />
 
-        <label>Valor Faxina:</label>
-        <Cleave
-          name="valorFaxina"
-          value={formData.locacao.valorFaxina}
-          onChange={handleLocacaoChange}
-          options={cleaveOptions}
-        />
+          <label>Valor Total:</label>
+          <input
+            type="text"
+            name="valorTotal"
+            value={`R$ ${formData.locacao.valorTotal}`}
+            readOnly
+          />
 
-        <label>Valor Total:</label>
-        <input
-          type="text"
-          name="valorTotal"
-          value={`R$ ${formData.locacao.valorTotal}`}
-          readOnly
-        />
+          <label>Data Reserva:</label>
+          <input
+            type="date"
+            name="dataReserva"
+            value={formData.locacao.dataReserva}
+            onChange={handleLocacaoChange}
+          />
 
-        <label>Data Reserva:</label>
-        <input
-          type="date"
-          name="dataReserva"
-          value={formData.locacao.dataReserva}
-          onChange={handleLocacaoChange}
-        />
+          <label>Valor Reserva:</label>
+          <Cleave
+            name="valorReserva"
+            value={formData.locacao.valorReserva}
+            onChange={handleLocacaoChange}
+            options={cleaveOptions}
+          />
 
-        <label>Valor Reserva:</label>
-        <Cleave
-          name="valorReserva"
-          value={formData.locacao.valorReserva}
-          onChange={handleLocacaoChange}
-          options={cleaveOptions}
-        />
+          <label>Valor Restante:</label>
+          <input
+            type="text"
+            name="valorRestante"
+            value={`R$ ${formData.locacao.valorRestante}`}
+            readOnly
+          />
 
-        <label>Valor Restante:</label>
-        <input
-          type="text"
-          name="valorRestante"
-          value={`R$ ${formData.locacao.valorRestante}`}
-          readOnly
-        />
-
-        <div className="form-acoes">
-          <button type="button" className="cancelar" onClick={() => navigate('/locacao')}>
-            Cancelar
-          </button>
-          <button type="submit" className="salvar">
-            Salvar
-          </button>
-        </div>
-      </form>
-    </section>
-    <Footer />
-  </>
+          <div className="form-acoes">
+            <button
+              type="button"
+              className="cancelar"
+              onClick={() => navigate('/locacao')}
+            >
+              Cancelar
+            </button>
+            <button type="submit" className="salvar">
+              Salvar
+            </button>
+          </div>
+        </form>
+      </section>
+      <Footer />
+    </>
   );
 };
 

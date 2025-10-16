@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
-import { buscarPorId, salvar } from '../../services/locacaoService';
+import { buscarPorId, atualizar } from '../../services/locacaoService';
 import { buscarTodos as buscarImoveis } from '../../services/imovelService';
 import { buscarTodos as buscarLocadores } from '../../services/locadorService';
 import { buscarPorCpf as buscarLocatarioPorCpf, buscarPorId as buscarLocatarioPorId } from '../../services/locatarioService';
-import './LocacaoForm.css';
-import { toast } from 'react-toastify';
+import { converterInputParaISO } from '../../utils/dataUtils';
 import Cleave from 'cleave.js/react';
+import { toast } from 'react-toastify';
+import './LocacaoForm.css';
 
 const LocacaoEditar = () => {
   const { id } = useParams();
@@ -23,7 +24,6 @@ const LocacaoEditar = () => {
       dataFim: '',
       qtdDias: '',
       qtdPessoas: '',
-      valorDiaria: '',
       valorLocacao: '',
       valorFaxina: '',
       valorTotal: '',
@@ -57,12 +57,14 @@ const LocacaoEditar = () => {
         setFormData({
           locacao: {
             ...dados,
-            valorDiaria: dados.valorDiaria.toFixed(2).replace('.', ','),
-            valorLocacao: dados.valorLocacao.toFixed(2).replace('.', ','),
-            valorFaxina: dados.valorFaxina.toFixed(2).replace('.', ','),
-            valorTotal: dados.valorTotal.toFixed(2).replace('.', ','),
-            valorReserva: dados.valorReserva.toFixed(2).replace('.', ','),
-            valorRestante: dados.valorRestante.toFixed(2).replace('.', ',')
+            dataInicio: dados.dataInicio?.substring(0, 10),
+            dataFim: dados.dataFim?.substring(0, 10),
+            dataReserva: dados.dataReserva?.substring(0, 10),
+            valorLocacao: dados.valorLocacao?.toFixed(2).replace('.', ','),
+            valorFaxina: dados.valorFaxina?.toFixed(2).replace('.', ','),
+            valorTotal: dados.valorTotal?.toFixed(2).replace('.', ','),
+            valorReserva: dados.valorReserva?.toFixed(2).replace('.', ','),
+            valorRestante: dados.valorRestante?.toFixed(2).replace('.', ',')
           },
           locador: {
             cpf: locadorSelecionado?.cpf || '',
@@ -91,7 +93,6 @@ const LocacaoEditar = () => {
     const { name, value } = e.target;
     const updatedLocacao = { ...formData.locacao, [name]: value };
 
-    // Cálculo de qtdDias
     if (name === 'dataInicio' || name === 'dataFim') {
       const inicio = new Date(updatedLocacao.dataInicio);
       const fim = new Date(updatedLocacao.dataFim);
@@ -104,19 +105,6 @@ const LocacaoEditar = () => {
       }
     }
 
-    // Cálculo de valorLocacao
-    const qtdPessoas = parseInt(updatedLocacao.qtdPessoas);
-    const qtdDias = parseInt(updatedLocacao.qtdDias);
-    const valorDiaria = parseFloat(limparValorMonetario(updatedLocacao.valorDiaria));
-
-    if (!isNaN(qtdPessoas) && !isNaN(qtdDias) && !isNaN(valorDiaria)) {
-      const valorLocacao = qtdPessoas * valorDiaria * qtdDias;
-      updatedLocacao.valorLocacao = valorLocacao.toFixed(2).replace('.', ',');
-    } else {
-      updatedLocacao.valorLocacao = '';
-    }
-
-    // Cálculo de valorTotal
     const valorLocacaoNum = parseFloat(limparValorMonetario(updatedLocacao.valorLocacao));
     const valorFaxinaNum = parseFloat(limparValorMonetario(updatedLocacao.valorFaxina));
     if (!isNaN(valorLocacaoNum) && !isNaN(valorFaxinaNum)) {
@@ -126,7 +114,6 @@ const LocacaoEditar = () => {
       updatedLocacao.valorTotal = '';
     }
 
-    // Cálculo de valorRestante
     const valorReservaNum = parseFloat(limparValorMonetario(updatedLocacao.valorReserva));
     const valorTotalNum = parseFloat(limparValorMonetario(updatedLocacao.valorTotal));
     if (!isNaN(valorTotalNum) && !isNaN(valorReservaNum)) {
@@ -179,7 +166,9 @@ const LocacaoEditar = () => {
     e.preventDefault();
     const payload = {
       ...formData.locacao,
-      valorDiaria: parseFloat(limparValorMonetario(formData.locacao.valorDiaria)),
+      dataInicio: converterInputParaISO(formData.locacao.dataInicio),
+      dataFim: converterInputParaISO(formData.locacao.dataFim),
+      dataReserva: converterInputParaISO(formData.locacao.dataReserva),
       valorLocacao: parseFloat(limparValorMonetario(formData.locacao.valorLocacao)),
       valorFaxina: parseFloat(limparValorMonetario(formData.locacao.valorFaxina)),
       valorTotal: parseFloat(limparValorMonetario(formData.locacao.valorTotal)),
@@ -187,7 +176,7 @@ const LocacaoEditar = () => {
       valorRestante: parseFloat(limparValorMonetario(formData.locacao.valorRestante))
     };
 
-    salvar(payload)
+    atualizar(id, payload)
       .then(() => {
         toast.success('Locação atualizada com sucesso!');
         navigate('/locacao');
@@ -208,19 +197,17 @@ const LocacaoEditar = () => {
     <>
       <Navbar />
       <section className="form-container">
-        <h2>Editar Locação</h2>        
+        <h2>Editar Locação</h2>
         <form className="form-locacao" onSubmit={handleSubmit}>
           <label>Imóvel:</label>
           <select value={formData.locacao.imovelId} onChange={handleImovelChange}>
             <option value="">Selecione</option>
             {imoveis.map((imovel) => (
-              <option key={imovel.id} value={imovel.id}>
-                {imovel.descricao}
-              </option>
+              <option key={imovel.id} value={imovel.id}>{imovel.descricao}</option>
             ))}
           </select>
 
-          <label>Locador:</label>
+                    <label>Locador:</label>
           <select value={formData.locador.cpf} onChange={handleLocadorChange}>
             <option value="">Selecione</option>
             {locadores.map((locador) => (
@@ -282,20 +269,12 @@ const LocacaoEditar = () => {
             onChange={handleLocacaoChange}
           />
 
-          <label>Valor Diária:</label>
-          <Cleave
-            name="valorDiaria"
-            value={formData.locacao.valorDiaria}
-            onChange={handleLocacaoChange}
-            options={cleaveOptions}
-          />
-
           <label>Valor Locação:</label>
           <Cleave
             name="valorLocacao"
             value={formData.locacao.valorLocacao}
+            onChange={handleLocacaoChange}
             options={cleaveOptions}
-            readOnly
           />
 
           <label>Valor Faxina:</label>
